@@ -1,0 +1,8 @@
+{
+    "id": "btc.base" ,
+    "dependencies": [
+        {
+            "id":"btc.binaries"
+        }
+    ]
+}

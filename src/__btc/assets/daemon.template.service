@@ -1,0 +1,15 @@
+[Unit]
+Description={{{ID}}} service
+After=network.target
+
+[Service]
+User={{{configuration.USER}}}
+Group={{{configuration.USER}}}
+
+Type=simple
+Restart=always
+
+ExecStart={{{ROOT_DIR}}}/bin/{{{model.DAEMON_NAME}}} -datadir={{{ROOT_DIR}}}/data
+
+[Install]
+WantedBy=default.target
