@@ -1,4 +1,4 @@
-local _user = APP.configuration.USER
+local _user = APP.user
 ami_assert(type(_user) == "string", "User not specified...")
 local _ok, _uid = eliFs.safe_getuid(_user)
 if not _ok or not _uid then
