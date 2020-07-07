@@ -3,8 +3,8 @@ Description={{{ID}}} service
 After=network.target
 
 [Service]
-User={{{configuration.USER}}}
-Group={{{configuration.USER}}}
+User={{{USER}}}
+Group={{{USER}}}
 
 Type=simple
 Restart=always
