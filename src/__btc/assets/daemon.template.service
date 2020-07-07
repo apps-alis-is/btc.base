@@ -11,5 +11,9 @@ Restart=always
 
 ExecStart={{{ROOT_DIR}}}/bin/{{{model.DAEMON_NAME}}} -datadir={{{ROOT_DIR}}}/data
 
+{{#configuration.TIMEOUT_STOP_SEC}}
+TimeoutStopSec={{{configuration.TIMEOUT_STOP_SEC}}}
+{{/configuration.TIMEOUT_STOP_SEC}}
+
 [Install]
 WantedBy=default.target
