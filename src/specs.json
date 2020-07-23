@@ -1,6 +1,6 @@
 {
     "id": "btc.base" ,
-    "version" : "0.0.6",
+    "version" : "0.0.7",
     "dependencies": [
         {
             "id":"btc.binaries"
