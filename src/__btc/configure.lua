@@ -20,7 +20,7 @@ ami_assert(_ok, "Failed to deploy " .. APP.model.CONF_NAME .. ": " .. (_error or
 local _ok, _uid = eliFs.safe_getuid(_user)
 ami_assert(_ok, "Failed to get " .. _user .. "uid - " .. (_uid or ""), EXIT_APP_CONFIGURE_ERROR)
 
-local _ok, _error = eliFs.chown(DATA_PATH, _uid, _uid)
+local _ok, _error = eliFs.safe_chown(DATA_PATH, _uid, _uid, { recurse = true })
 ami_assert(_ok, "Failed to chown " .. DATA_PATH .. " - " .. (_error or ""), EXIT_APP_CONFIGURE_ERROR)
 
 log_info("Configuring " .. APP.id .. " services...")
