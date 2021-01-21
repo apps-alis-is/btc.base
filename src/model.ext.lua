@@ -1,8 +1,4 @@
-if type(APP.model) ~= "table" then
-    APP.model = {}
-end
-
-if type(APP.configuration) ~= "table" then
+if type(am.app.get_config()) ~= "table" then
     ami_error("Configuration not found...", EXIT_INVALID_CONFIGURATION)
 end
 
@@ -15,31 +11,29 @@ _charset:gsub(
     end
 )
 
-local _rpcPass = eliUtil.random_string(20, _charsetTable)
-local _daemonConfiguration = type(APP.configuration.DAEMON_CONFIGURATION) == "table" and APP.configuration.DAEMON_CONFIGURATION or  {}
+local _rpcPass = util.random_string(20, _charsetTable)
+local _daemonConfiguration = type(am.app.get_config("DAEMON_CONFIGURATION")) == "table" and am.app.get_config("DAEMON_CONFIGURATION") or  {}
 if not _daemonConfiguration.rpcuser then
-    _daemonConfiguration.rpcuser = APP.user
+    _daemonConfiguration.rpcuser = am.app.get("user")
 end
 if not _daemonConfiguration.rpcpassword then
     _daemonConfiguration.rpcpassword = _rpcPass
 end
 
-APP.model =
-    eliUtil.merge_tables(
-    APP.model,
+am.app.set_model(
     {
-        DAEMON_CONFIGURATION = eliUtil.merge_tables(
+        DAEMON_CONFIGURATION = util.merge_tables(
+            _daemonConfiguration,
             {
-                server = APP.configuration.SERVER and 1 or nil,
-                listen = APP.configuration.SERVER and 1 or nil,
-            },
-            _daemonConfiguration
+                server = am.app.get_config("SERVER") and 1 or nil,
+                listen = am.app.get_config("SERVER") and 1 or nil,
+            }
         ),
-        SERVICE_CONFIGURATION = eliUtil.merge_tables(
+        SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,
             },
-            type(APP.configuration.SERVICE_CONFIGURATION) == "table" and APP.configuration.SERVICE_CONFIGURATION or {},
+            type(am.app.get_config("SERVICE_CONFIGURATION")) == "table" and am.app.get_config("SERVICE_CONFIGURATION") or {},
             true
         ),
         DAEMON_NAME = "bictoind",
@@ -49,5 +43,5 @@ APP.model =
         SERVICE_NAME = "bictoind",
         DATA_DIR = "data"
     },
-    true
+    { merge = true, overwrite = true }
 )
