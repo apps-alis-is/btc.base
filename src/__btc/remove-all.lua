@@ -1,4 +1,4 @@
-local _ok, _systemctl = am.plugin.get("systemctl")
+local _ok, _systemctl = am.plugin.safe_get("systemctl")
 ami_assert(_ok, "Failed to load systemctl plugin")
 
 local _ok, _error = _systemctl.safe_remove_service(am.app.get("id") .. "-" .. am.app.get_model("SERVICE_NAME"))

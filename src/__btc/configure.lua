@@ -25,7 +25,7 @@ ami_assert(_ok, "Failed to chown " .. DATA_PATH .. " - " .. (_error or ""))
 
 log_info("Configuring " .. am.app.get("id") .. " services...")
 
-local _ok, _systemctl = am.plugin.get("systemctl")
+local _ok, _systemctl = am.plugin.safe_get("systemctl")
 ami_assert(_ok, "Failed to load systemctl plugin - " .. tostring(_systemctl))
 local _ok, _error = _systemctl.safe_install_service("__btc/assets/daemon.service", am.app.get("id") .. "-" .. am.app.get_model("SERVICE_NAME", ""))
 ami_assert(_ok, "Failed to install " .. am.app.get("id") .. "-" .. am.app.get_model("SERVICE_NAME", "") .. ".service " .. (_error or ""))
