@@ -22,13 +22,10 @@ end
 
 am.app.set_model(
     {
-        DAEMON_CONFIGURATION = util.merge_tables(
-            _daemonConfiguration,
-            {
-                server = am.app.get_config("SERVER") and 1 or nil,
-                listen = am.app.get_config("SERVER") and 1 or nil,
-            }
-        ),
+        DAEMON_CONFIGURATION = {
+            server = am.app.get_config("SERVER") and 1 or nil,
+            listen = am.app.get_config("SERVER") and 1 or nil,
+        },
         SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,
