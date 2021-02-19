@@ -20,11 +20,17 @@ if not _daemonConfiguration.rpcpassword then
     _daemonConfiguration.rpcpassword = _rpcPass
 end
 
+local _externalIp = nil
+if not am.app.get_config("externalip") then
+    _externalIp = am.app.get_config("bind", ""):match("(.*):.*")
+end
+
 am.app.set_model(
     {
         DAEMON_CONFIGURATION = {
             server = am.app.get_config("SERVER") and 1 or nil,
             listen = am.app.get_config("SERVER") and 1 or nil,
+            externalip = _externalIp
         },
         SERVICE_CONFIGURATION = util.merge_tables(
             {
