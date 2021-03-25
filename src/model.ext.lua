@@ -44,7 +44,7 @@ am.app.set_model(
         CONF_NAME = "bictoin.conf",
         CONF_SOURCE = "__btc/assets/daemon.conf",
         SERVICE_NAME = "bictoind",
-        DATA_DIR = "data"
+        DATA_DIR = path.combine(os.cwd(), "data")
     },
     { merge = true, overwrite = true }
 )
