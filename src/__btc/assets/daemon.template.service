@@ -1,6 +1,7 @@
 [Unit]
 Description={{{ID}}} service
 After=network.target
+StartLimitInterval=0
 
 [Service]
 User={{{USER}}}
@@ -8,6 +9,7 @@ Group={{{USER}}}
 
 Type=simple
 Restart=always
+RestartSec=5
 
 ExecStart={{{ROOT_DIR}}}/bin/{{{model.DAEMON_NAME}}} -datadir={{{model.DATA_DIR}}}
 
