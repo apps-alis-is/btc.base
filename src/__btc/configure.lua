@@ -1,17 +1,15 @@
 local _user = am.app.get("user")
 ami_assert(type(_user) == "string", "User not specified...")
-local _ok, _uid = fs.safe_getuid(_user)
-if not _ok or not _uid then
-    log_info("Creating user - " .. _user .. "...")
-    local _ok = os.execute('adduser --disabled-login --disabled-password --gecos "" ' .. _user)
-    ami_assert(_ok, "Failed to create user - " .. _user)
-    log_info("User " .. _user .. " created.")
-else
-    log_info("User " .. _user .. " found.")
-end
+
+local _ok, _userPlugin = am.plugin.safe_get("user")
+ami_assert(_ok, "Failed to load user plugin - " .. tostring(_userPlugin), EXIT_PLUGIN_LOAD_ERROR)
+
+log_info("Checking user '" .. _user .. "' availability...")
+local _ok = _userPlugin.add(_user)
+ami_assert(_ok, "Failed to create user - " .. _user)
 
 local DATA_PATH = am.app.get_model("DATA_DIR")
-local _ok, _error = fs.safe_mkdirp(DATA_PATH)
+fs.safe_mkdirp(DATA_PATH)
 
 local _confDest = path.combine(DATA_PATH, am.app.get_model("CONF_NAME"))
 local _ok, _error = fs.safe_copy_file(am.app.get_model("CONF_SOURCE"), _confDest)
