@@ -1,4 +1,5 @@
 return {
+    base = "app",
     commands = {
         setup = {
             options = {

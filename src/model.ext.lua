@@ -2,9 +2,7 @@ if type(am.app.get_configuration()) ~= "table" then
     ami_error("Configuration not found...", EXIT_INVALID_CONFIGURATION)
 end
 
-local _charsetTable = {}
-
-local _rpcPass = util.random_string(20, _charsetTable)
+local _rpcPass = util.random_string(20)
 local _daemonConfiguration = type(am.app.get_configuration("DAEMON_CONFIGURATION")) == "table" and am.app.get_configuration("DAEMON_CONFIGURATION") or  {}
 if not _daemonConfiguration.rpcuser then
     _daemonConfiguration.rpcuser = am.app.get("user")
