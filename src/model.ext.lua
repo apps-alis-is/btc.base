@@ -35,6 +35,7 @@ am.app.set_model(
         CONF_NAME = "bictoin.conf",
         CONF_SOURCE = "__btc/assets/daemon.conf",
         SERVICE_NAME = "bictoind",
+        STARTUP_ARGS = am.app.get_configuration("STARTUP_ARGS", {}),
         DATA_DIR = path.combine(os.cwd(), "data"),
         ABOUT_SOURCE = "__btc/about.hjson"
     },
