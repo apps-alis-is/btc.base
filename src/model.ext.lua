@@ -16,13 +16,15 @@ if not am.app.get_configuration("externalip") then
     _externalIp = am.app.get_configuration("bind", ""):match("(.*):.*")
 end
 
+local _daemonConfiguration = util.merge_tables({
+    server = am.app.get_configuration("SERVER") and 1 or nil,
+    listen = am.app.get_configuration("SERVER") and 1 or nil,
+    externalip = _externalIp
+}, am.app.get_configuration("DAEMON_CONFIGURATION", {}), true)
+
 am.app.set_model(
     {
-        DAEMON_CONFIGURATION = {
-            server = am.app.get_configuration("SERVER") and 1 or nil,
-            listen = am.app.get_configuration("SERVER") and 1 or nil,
-            externalip = _externalIp
-        },
+        DAEMON_CONFIGURATION = _daemonConfiguration,
         SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,
