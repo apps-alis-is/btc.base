@@ -18,7 +18,7 @@ return {
                 end
 
                 if _noOptions or _options.app then
-                    am.execute_extension('__btc/download-binaries.lua', {contextFailExitCode = EXIT_SETUP_ERROR})
+                    am.execute_extension('__btc/download-binaries.lua', {context_fail_exit_code = EXIT_SETUP_ERROR})
                 end
 
                 if _noOptions or not _options['no-validate'] then
@@ -28,7 +28,7 @@ return {
                 if _noOptions or _options.configure then
                     am.app.render()
 
-                    am.execute_extension('__btc/configure.lua', {contextFailExitCode = EXIT_APP_CONFIGURE_ERROR})
+                    am.execute_extension('__btc/configure.lua', {context_fail_exit_code = EXIT_APP_CONFIGURE_ERROR})
                 end
                 log_success('Node setup complete.')
             end
@@ -37,19 +37,19 @@ return {
             description = "ami 'info' sub command",
             summary = 'Prints runtime info and status of the node',
             action = '__btc/info.lua',
-            contextFailExitCode = EXIT_APP_INFO_ERROR
+            context_fail_exit_code = EXIT_APP_INFO_ERROR
         },
         start = {
             description = "ami 'start' sub command",
             summary = 'Starts the node',
             action = '__btc/start.lua',
-            contextFailExitCode = EXIT_APP_START_ERROR
+            context_fail_exit_code = EXIT_APP_START_ERROR
         },
         stop = {
             description = "ami 'stop' sub command",
             summary = 'Stops the node',
             action = '__btc/stop.lua',
-            contextFailExitCode = EXIT_APP_STOP_ERROR
+            context_fail_exit_code = EXIT_APP_STOP_ERROR
         },
         validate = {
             description = "ami 'validate' sub command",
@@ -97,24 +97,24 @@ return {
             summary = 'Passes any passed arguments directly to cli.',
             type = 'external',
             exec = path.combine('bin', am.app.get_model('CLI_NAME')),
-            injectArgs = {
+            inject_args = {
                 '-rpcconnect=' .. am.app.get_configuration({'DAEMON_CONFIGURATION', 'rpcbind'}, '127.0.0.1'),
                 '-datadir=data'
             },
-            contextFailExitCode = EXIT_APP_INTERNAL_ERROR
+            context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
         },
         removedb = {
             index = 6,
             description = 'command for crownd database removal',
             summary = 'Removes crownd database',
             action = '__btc/removedb.lua',
-            contextFailExitCode = EXIT_RM_DATA_ERROR
+            context_fail_exit_code = EXIT_RM_DATA_ERROR
         },
         remove = {
             index = 7,
             action = function(_options, _, _, _)
                 if _options.all then
-                    am.execute_extension('__btc/remove-all.lua', {contextFailExitCode = EXIT_RM_ERROR})
+                    am.execute_extension('__btc/remove-all.lua', {context_fail_exit_code = EXIT_RM_ERROR})
                     am.app.remove()
                     log_success('Application removed.')
                 else
