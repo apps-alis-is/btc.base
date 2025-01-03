@@ -2,30 +2,30 @@ if type(am.app.get_configuration()) ~= "table" then
     ami_error("Configuration not found...", EXIT_INVALID_CONFIGURATION)
 end
 
-local _rpc_pass = util.random_string(20)
-local _daemon_configuration = type(am.app.get_configuration("DAEMON_CONFIGURATION")) == "table" and
+local rpc_pass = util.random_string(20)
+local daemon_conf = type(am.app.get_configuration("DAEMON_CONFIGURATION")) == "table" and
     am.app.get_configuration("DAEMON_CONFIGURATION") or {}
-if not _daemon_configuration.rpcuser then
-    _daemon_configuration.rpcuser = am.app.get("user")
+if not daemon_conf.rpcuser then
+    daemon_conf.rpcuser = am.app.get("user")
 end
-if not _daemon_configuration.rpcpassword then
-    _daemon_configuration.rpcpassword = _rpc_pass
+if not daemon_conf.rpcpassword then
+    daemon_conf.rpcpassword = rpc_pass
 end
 
-local _external_ip = nil
+local external_ip = nil
 if not am.app.get_configuration("externalip") then
-    _external_ip = am.app.get_configuration("bind", ""):match("(.*):.*")
+    external_ip = am.app.get_configuration("bind", ""):match("(.*):.*")
 end
 
-local _daemon_configuration = util.merge_tables({
+local daemon_conf = util.merge_tables({
     server = am.app.get_configuration("SERVER") and 1 or nil,
     listen = am.app.get_configuration("SERVER") and 1 or nil,
-    externalip = _external_ip
+    externalip = external_ip
 }, am.app.get_configuration("DAEMON_CONFIGURATION", {}), true)
 
 am.app.set_model(
     {
-        DAEMON_CONFIGURATION = _daemon_configuration,
+        DAEMON_CONFIGURATION = daemon_conf,
         SERVICE_CONFIGURATION = util.merge_tables(
             {
                 TimeoutStopSec = 300,

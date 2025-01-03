@@ -7,25 +7,25 @@ return {
                     description = 'Configures application, renders templates and installs services'
                 }
             },
-            action = function(_options, _, _, _)
-                local _no_options = #table.keys(_options) == 0
-                if _no_options or _options.environment then
+            action = function(options, _, _, _)
+                local no_options = #table.keys(options) == 0
+                if no_options or options.environment then
                     am.app.prepare()
                 end
 
-                if _no_options or not _options['no-validate'] then
+                if no_options or not options['no-validate'] then
                     am.execute('validate', { '--platform' })
                 end
 
-                if _no_options or _options.app then
+                if no_options or options.app then
                     am.execute_extension('__btc/download-binaries.lua', { context_fail_exit_code = EXIT_SETUP_ERROR })
                 end
 
-                if _no_options or not _options['no-validate'] then
+                if no_options or not options['no-validate'] then
                     am.execute('validate', { '--configuration' })
                 end
 
-                if _no_options or _options.configure then
+                if no_options or options.configure then
                     am.app.render()
 
                     am.execute_extension('__btc/configure.lua', { context_fail_exit_code = EXIT_APP_CONFIGURE_ERROR })
@@ -77,18 +77,18 @@ return {
             description = "ami 'about' sub command",
             summary = 'Prints information about application',
             action = function(_, _, _, _)
-                local _ok, _about_file = fs.safe_read_file(am.app.get_model('ABOUT_SOURCE'))
-                ami_assert(_ok, 'Failed to read about file!', EXIT_APP_ABOUT_ERROR)
+                local ok, about_file = fs.safe_read_file(am.app.get_model('ABOUT_SOURCE'))
+                ami_assert(ok, 'Failed to read about file!', EXIT_APP_ABOUT_ERROR)
 
-                local _ok, _about = hjson.safe_parse(_about_file)
-                ami_assert(_ok, 'Failed to parse about file!', EXIT_APP_ABOUT_ERROR)
-                if type(_about) == 'table' then --inject app type
-                    _about['App Type'] = am.app.get({ 'type', 'id' }, am.app.get('type'))
+                local ok, about = hjson.safe_parse(about_file)
+                ami_assert(ok, 'Failed to parse about file!', EXIT_APP_ABOUT_ERROR)
+                if type(about) == 'table' then --inject app type
+                    about['App Type'] = am.app.get({ 'type', 'id' }, am.app.get('type'))
                 end
                 if am.options.OUTPUT_FORMAT == 'json' then
-                    print(hjson.stringify_to_json(_about, { indent = false, skipkeys = true }))
+                    print(hjson.stringify_to_json(about, { indent = false, skipkeys = true }))
                 else
-                    print(hjson.stringify(_about))
+                    print(hjson.stringify(about))
                 end
             end
         },
