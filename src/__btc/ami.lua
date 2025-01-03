@@ -8,27 +8,27 @@ return {
                 }
             },
             action = function(_options, _, _, _)
-                local _noOptions = #table.keys(_options) == 0
-                if _noOptions or _options.environment then
+                local _no_options = #table.keys(_options) == 0
+                if _no_options or _options.environment then
                     am.app.prepare()
                 end
 
-                if _noOptions or not _options['no-validate'] then
-                    am.execute('validate', {'--platform'})
+                if _no_options or not _options['no-validate'] then
+                    am.execute('validate', { '--platform' })
                 end
 
-                if _noOptions or _options.app then
-                    am.execute_extension('__btc/download-binaries.lua', {context_fail_exit_code = EXIT_SETUP_ERROR})
+                if _no_options or _options.app then
+                    am.execute_extension('__btc/download-binaries.lua', { context_fail_exit_code = EXIT_SETUP_ERROR })
                 end
 
-                if _noOptions or not _options['no-validate'] then
-                    am.execute('validate', {'--configuration'})
+                if _no_options or not _options['no-validate'] then
+                    am.execute('validate', { '--configuration' })
                 end
 
-                if _noOptions or _options.configure then
+                if _no_options or _options.configure then
                     am.app.render()
 
-                    am.execute_extension('__btc/configure.lua', {context_fail_exit_code = EXIT_APP_CONFIGURE_ERROR})
+                    am.execute_extension('__btc/configure.lua', { context_fail_exit_code = EXIT_APP_CONFIGURE_ERROR })
                 end
                 log_success('Node setup complete.')
             end
@@ -77,28 +77,28 @@ return {
             description = "ami 'about' sub command",
             summary = 'Prints information about application',
             action = function(_, _, _, _)
-                local _ok, _aboutFile = fs.safe_read_file(am.app.get_model('ABOUT_SOURCE'))
+                local _ok, _about_file = fs.safe_read_file(am.app.get_model('ABOUT_SOURCE'))
                 ami_assert(_ok, 'Failed to read about file!', EXIT_APP_ABOUT_ERROR)
 
-                local _ok, _about = hjson.safe_parse(_aboutFile)
+                local _ok, _about = hjson.safe_parse(_about_file)
                 ami_assert(_ok, 'Failed to parse about file!', EXIT_APP_ABOUT_ERROR)
                 if type(_about) == 'table' then --inject app type
-                    _about['App Type'] = am.app.get({'type', 'id'}, am.app.get('type'))
+                    _about['App Type'] = am.app.get({ 'type', 'id' }, am.app.get('type'))
                 end
                 if am.options.OUTPUT_FORMAT == 'json' then
-                    print(hjson.stringify_to_json(_about, {indent = false, skipkeys = true}))
+                    print(hjson.stringify_to_json(_about, { indent = false, skipkeys = true }))
                 else
                     print(hjson.stringify(_about))
                 end
             end
         },
-		cli = {
+        cli = {
             description = "ami 'cli' pass through command",
             summary = 'Passes any passed arguments directly to cli.',
             type = 'external',
             exec = path.combine('bin', am.app.get_model('CLI_NAME')),
             inject_args = {
-                '-rpcconnect=' .. am.app.get_configuration({'DAEMON_CONFIGURATION', 'rpcbind'}, '127.0.0.1'),
+                '-rpcconnect=' .. am.app.get_configuration({ 'DAEMON_CONFIGURATION', 'rpcbind' }, '127.0.0.1'),
                 '-datadir=data'
             },
             context_fail_exit_code = EXIT_APP_INTERNAL_ERROR
@@ -114,7 +114,7 @@ return {
             index = 7,
             action = function(_options, _, _, _)
                 if _options.all then
-                    am.execute_extension('__btc/remove-all.lua', {context_fail_exit_code = EXIT_RM_ERROR})
+                    am.execute_extension('__btc/remove-all.lua', { context_fail_exit_code = EXIT_RM_ERROR })
                     am.app.remove()
                     log_success('Application removed.')
                 else
