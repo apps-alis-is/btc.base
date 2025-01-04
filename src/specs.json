@@ -1,9 +1,9 @@
 {
-    "id": "btc.base" ,
-    "version" : "0.7.0",
-    "dependencies": [
-        {
-            "id":"btc.binaries"
-        }
-    ]
+  "id": "btc.base",
+  "version": "0.8.0",
+  "dependencies": [
+    {
+      "id": "btc.binaries"
+    }
+  ]
 }
