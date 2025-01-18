@@ -86,7 +86,7 @@ return {
                     about['App Type'] = am.app.get({ 'type', 'id' }, am.app.get('type'))
                 end
                 if am.options.OUTPUT_FORMAT == 'json' then
-                    print(hjson.stringify_to_json(about, { indent = false, skipkeys = true }))
+                    print(hjson.stringify_to_json(about, { indent = false, skip_keys = true }))
                 else
                     print(hjson.stringify(about))
                 end
