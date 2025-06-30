@@ -77,11 +77,11 @@ return {
             description = "ami 'about' sub command",
             summary = 'Prints information about application',
             action = function(_, _, _, _)
-                local ok, about_file = fs.safe_read_file(am.app.get_model('ABOUT_SOURCE'))
-                ami_assert(ok, 'Failed to read about file!', EXIT_APP_ABOUT_ERROR)
+                local about_file, err = fs.read_file(am.app.get_model('ABOUT_SOURCE'))
+                ami_assert(about_file, 'Failed to read about file!', EXIT_APP_ABOUT_ERROR)
 
-                local ok, about = hjson.safe_parse(about_file)
-                ami_assert(ok, 'Failed to parse about file!', EXIT_APP_ABOUT_ERROR)
+                local about, err = hjson.parse(about_file)
+                ami_assert(about, 'Failed to parse about file!', EXIT_APP_ABOUT_ERROR)
                 if type(about) == 'table' then --inject app type
                     about['App Type'] = am.app.get({ 'type', 'id' }, am.app.get('type'))
                 end
